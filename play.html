@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play Quiz - Quiz Wizard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <div class="flex-grow flex flex-col">
+    <!-- Quiz Header -->
+    <header class="bg-quiz-primary text-white py-4">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <a href="index.html" class="flex items-center gap-2">
+            <div class="bg-white rounded-full p-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-quiz-primary">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span class="font-bold hidden md:block">Quiz Wizard</span>
+          </a>
+        </div>
+        
+        <h1 id="quiz-title" class="text-lg font-bold">Loading Quiz...</h1>
+        
+        <div class="flex items-center gap-2">
+          <div id="player-info" class="text-sm">
+            <span id="player-name"></span>
+          </div>
+          <button 
+            id="exit-button" 
+            class="bg-white/20 hover:bg-white/30 text-white rounded-md px-3 py-1 text-sm"
+          >
+            Exit
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="flex-grow flex flex-col items-center justify-center">
+      <div class="w-16 h-16 border-4 border-quiz-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="text-quiz-dark">Loading quiz...</p>
+    </div>
+    
+    <!-- Quiz Lobby -->
+    <div id="quiz-lobby" class="hidden flex-grow flex flex-col items-center justify-center p-4">
+      <div class="max-w-lg w-full text-center">
+        <h2 class="text-2xl font-bold text-quiz-dark mb-4">Waiting for the quiz to start</h2>
+        <p class="text-gray-600 mb-6">Get ready! The quiz will begin soon.</p>
+        
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+          <p class="text-gray-600 mb-2">You've joined as:</p>
+          <p id="lobby-player-name" class="text-2xl font-bold text-quiz-primary"></p>
+        </div>
+        
+        <button 
+          id="start-quiz-button" 
+          class="bg-quiz-primary text-white px-6 py-3 rounded-full hover:bg-quiz-primary/90"
+        >
+          Start Quiz
+        </button>
+      </div>
+    </div>
+    
+    <!-- Quiz Question Screen -->
+    <div id="question-screen" class="hidden flex-grow flex flex-col">
+      <!-- Question Header -->
+      <div class="bg-gradient-to-r from-quiz-primary to-quiz-primary/80 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+          <h2 id="question-number" class="text-lg mb-2">Question 1 of 10</h2>
+          <p id="question-text" class="text-xl md:text-2xl font-bold">Loading question...</p>
+        </div>
+      </div>
+      
+      <!-- Timer -->
+      <div class="bg-gray-100 h-2">
+        <div id="timer-bar" class="bg-quiz-primary h-full transition-all duration-1000" style="width: 100%;"></div>
+      </div>
+      
+      <!-- Answer Options -->
+      <div id="answers-container" class="flex-grow container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl"></div>
+    </div>
+    
+    <!-- Answer Result Screen -->
+    <div id="answer-result" class="hidden flex-grow flex flex-col items-center justify-center text-center p-4">
+      <div id="correct-answer" class="hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-green-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h2 class="text-3xl font-bold text-green-500 mb-2">Correct!</h2>
+        <p class="text-gray-600 text-lg">Well done!</p>
+      </div>
+      
+      <div id="incorrect-answer" class="hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-red-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <h2 class="text-3xl font-bold text-red-500 mb-2">Incorrect</h2>
+        <p id="correct-answer-text" class="text-gray-600 text-lg">The correct answer was: </p>
+      </div>
+      
+      <p id="next-question-timer" class="mt-8 text-quiz-primary font-bold">Next question in 5...</p>
+    </div>
+    
+    <!-- Quiz End Screen -->
+    <div id="quiz-end" class="hidden flex-grow flex flex-col items-center justify-center p-4">
+      <div class="max-w-lg w-full text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-quiz-primary mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 6v12"/><path d="m8 10 4-4 4 4"/>
+        </svg>
+        
+        <h2 class="text-3xl font-bold text-quiz-dark mb-2">Quiz Completed!</h2>
+        <p class="text-gray-600 mb-6">Great job completing the quiz!</p>
+        
+        <div class="bg-white shadow-lg rounded-lg p-8 mb-8">
+          <h3 class="text-xl font-bold text-quiz-dark mb-4">Your Results</h3>
+          
+          <div class="mb-4 text-center">
+            <div class="inline-flex items-center justify-center w-32 h-32 rounded-full border-8 border-quiz-primary mb-2">
+              <span id="score-percentage" class="text-3xl font-bold text-quiz-primary">0%</span>
+            </div>
+          </div>
+          
+          <div class="flex justify-between text-sm mb-2">
+            <span class="text-gray-600">Questions:</span>
+            <span id="total-questions" class="font-semibold">0</span>
+          </div>
+          
+          <div class="flex justify-between text-sm mb-2">
+            <span class="text-gray-600">Correct Answers:</span>
+            <span id="correct-answers" class="font-semibold">0</span>
+          </div>
+          
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Time Completed:</span>
+            <span id="time-completed" class="font-semibold">00:00</span>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a 
+            href="index.html" 
+            class="bg-quiz-primary text-white px-6 py-3 rounded-md hover:bg-quiz-primary/90 inline-block"
+          >
+            Back to Home
+          </a>
+          <button 
+            id="play-again" 
+            class="border border-quiz-primary text-quiz-primary px-6 py-3 rounded-md hover:bg-quiz-primary/10"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/kahootAPI.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const loadingScreen = document.getElementById('loading-screen');
+      const quizLobby = document.getElementById('quiz-lobby');
+      const questionScreen = document.getElementById('question-screen');
+      const answerResult = document.getElementById('answer-result');
+      const quizEnd = document.getElementById('quiz-end');
+      
+      const quizTitle = document.getElementById('quiz-title');
+      const playerName = document.getElementById('player-name');
+      const lobbyPlayerName = document.getElementById('lobby-player-name');
+      const questionNumber = document.getElementById('question-number');
+      const questionText = document.getElementById('question-text');
+      const answersContainer = document.getElementById('answers-container');
+      const timerBar = document.getElementById('timer-bar');
+      
+      const correctAnswer = document.getElementById('correct-answer');
+      const incorrectAnswer = document.getElementById('incorrect-answer');
+      const correctAnswerText = document.getElementById('correct-answer-text');
+      const nextQuestionTimer = document.getElementById('next-question-timer');
+      
+      const startQuizButton = document.getElementById('start-quiz-button');
+      const exitButton = document.getElementById('exit-button');
+      const playAgainButton = document.getElementById('play-again');
+      
+      // Quiz state
+      let quiz = null;
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let correctCount = 0;
+      let userAnswers = [];
+      let timerInterval = null;
+      let startTime = null;
+      let endTime = null;
+      
+      // Get player info from local storage
+      const playerInfo = JSON.parse(localStorage.getItem('quizPlayer')) || { nickname: 'Guest' };
+      playerName.textContent = playerInfo.nickname;
+      lobbyPlayerName.textContent = playerInfo.nickname;
+      
+      // Get quiz ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const gameId = urlParams.get('game') || '1234-abcd';
+      
+      // Load quiz
+      async function loadQuiz() {
+        try {
+          // Show loading
+          showScreen(loadingScreen);
+          
+          // Fetch quiz data
+          quiz = await window.KahootAPI.fetchQuizById(gameId);
+          
+          // Update UI with quiz info
+          quizTitle.textContent = quiz.title;
+          
+          // Go to lobby
+          showScreen(quizLobby);
+        } catch (error) {
+          alert('Failed to load quiz: ' + error.message);
+          window.location.href = 'index.html';
+        }
+      }
+      
+      // Start quiz
+      function startQuiz() {
+        // Initialize quiz state
+        currentQuestionIndex = 0;
+        score = 0;
+        correctCount = 0;
+        userAnswers = [];
+        startTime = new Date();
+        
+        // Show first question
+        showQuestion(currentQuestionIndex);
+      }
+      
+      // Show question
+      function showQuestion(index) {
+        // Make sure we have a valid index
+        if (index >= quiz.questions.length) {
+          endQuiz();
+          return;
+        }
+        
+        const question = quiz.questions[index];
+        
+        // Update question UI
+        questionNumber.textContent = `Question ${index + 1} of ${quiz.questions.length}`;
+        questionText.textContent = question.question;
+        
+        // Create answer options
+        let answersHTML = '';
+        const colors = ['bg-red-500', 'bg-blue-500', 'bg-yellow-500', 'bg-green-500'];
+        const letters = ['A', 'B', 'C', 'D'];
+        
+        question.choices.forEach((choice, i) => {
+          answersHTML += `
+            <button 
+              class="answer-option h-32 ${colors[i]} text-white rounded-lg p-4 flex items-center justify-center text-xl font-semibold hover:opacity-90 transition-opacity"
+              data-index="${i}"
+            >
+              <span>${choice.answer}</span>
+            </button>
+          `;
+        });
+        
+        answersContainer.innerHTML = answersHTML;
+        
+        // Add event listeners to answer options
+        document.querySelectorAll('.answer-option').forEach(button => {
+          button.addEventListener('click', handleAnswerClick);
+        });
+        
+        // Reset and start timer
+        startTimer(question.time);
+        
+        // Show question screen
+        showScreen(questionScreen);
+      }
+      
+      // Start timer for question
+      function startTimer(seconds) {
+        // Reset timer bar
+        timerBar.style.width = '100%';
+        
+        // Clear any existing interval
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
+        
+        // Calculate step for smooth animation
+        const stepPercentage = 100 / (seconds * 10); // Update every 100ms
+        let timeLeft = seconds * 10; // in 100ms units
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          const widthPercentage = Math.max(0, timeLeft * stepPercentage);
+          timerBar.style.width = `${widthPercentage}%`;
+          
+          // Times up
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            handleTimesUp();
+          }
+        }, 100);
+      }
+      
+      // Handle when time runs out
+      function handleTimesUp() {
+        // Record that user didn't answer
+        userAnswers.push({ questionIndex: currentQuestionIndex, answerIndex: -1, correct: false });
+        
+        // Show incorrect answer screen
+        showAnswerResult(false);
+      }
+      
+      // Handle answer click
+      function handleAnswerClick(e) {
+        // Clear timer
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
+        
+        // Get answer index
+        const answerIndex = parseInt(e.currentTarget.dataset.index);
+        
+        // Check if answer is correct
+        const question = quiz.questions[currentQuestionIndex];
+        const isCorrect = question.choices[answerIndex].correct;
+        
+        // Update score
+        if (isCorrect) {
+          correctCount++;
+          score += 100;
+        }
+        
+        // Record user answer
+        userAnswers.push({ questionIndex: currentQuestionIndex, answerIndex, correct: isCorrect });
+        
+        // Highlight selected answer
+        document.querySelectorAll('.answer-option').forEach(btn => {
+          btn.classList.add('opacity-70');
+          btn.removeEventListener('click', handleAnswerClick);
+        });
+        e.currentTarget.classList.remove('opacity-70');
+        e.currentTarget.classList.add('ring-4', 'ring-white');
+        
+        // Show result after a short delay
+        setTimeout(() => {
+          showAnswerResult(isCorrect);
+        }, 1000);
+      }
+      
+      // Show answer result
+      function showAnswerResult(isCorrect) {
+        // Display correct or incorrect message
+        if (isCorrect) {
+          correctAnswer.classList.remove('hidden');
+          incorrectAnswer.classList.add('hidden');
+        } else {
+          correctAnswer.classList.add('hidden');
+          incorrectAnswer.classList.remove('hidden');
+          
+          // Show correct answer
+          const question = quiz.questions[currentQuestionIndex];
+          const correctAnswerIndex = question.choices.findIndex(choice => choice.correct);
+          correctAnswerText.textContent = `The correct answer was: ${question.choices[correctAnswerIndex].answer}`;
+        }
+        
+        // Show result screen
+        showScreen(answerResult);
+        
+        // Start countdown for next question
+        let countdown = 5;
+        nextQuestionTimer.textContent = `Next question in ${countdown}...`;
+        
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          
+          if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < quiz.questions.length) {
+              showQuestion(currentQuestionIndex);
+            } else {
+              endQuiz();
+            }
+          } else {
+            nextQuestionTimer.textContent = `Next question in ${countdown}...`;
+          }
+        }, 1000);
+      }
+      
+      // End quiz and show results
+      function endQuiz() {
+        endTime = new Date();
+        const totalTime = Math.floor((endTime - startTime) / 1000); // in seconds
+        const minutes = Math.floor(totalTime / 60);
+        const seconds = totalTime % 60;
+        
+        // Calculate score percentage
+        const scorePercentage = Math.round((correctCount / quiz.questions.length) * 100);
+        
+        // Update result UI
+        document.getElementById('score-percentage').textContent = `${scorePercentage}%`;
+        document.getElementById('total-questions').textContent = quiz.questions.length;
+        document.getElementById('correct-answers').textContent = correctCount;
+        document.getElementById('time-completed').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Show end screen
+        showScreen(quizEnd);
+        
+        // Submit results to API (in a real app)
+        window.KahootAPI.submitQuizAnswers(gameId, userAnswers);
+      }
+      
+      // Helper to switch between screens
+      function showScreen(screenToShow) {
+        // Hide all screens
+        loadingScreen.classList.add('hidden');
+        quizLobby.classList.add('hidden');
+        questionScreen.classList.add('hidden');
+        answerResult.classList.add('hidden');
+        quizEnd.classList.add('hidden');
+        
+        // Show requested screen
+        screenToShow.classList.remove('hidden');
+        
+        // Add flex class if needed
+        if (screenToShow.id !== 'question-screen') {
+          screenToShow.classList.add('flex');
+        }
+      }
+      
+      // Event listeners
+      startQuizButton.addEventListener('click', startQuiz);
+      
+      exitButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to exit this quiz?')) {
+          window.location.href = 'index.html';
+        }
+      });
+      
+      playAgainButton.addEventListener('click', function() {
+        // Reset and show lobby
+        showScreen(quizLobby);
+      });
+      
+      // Start loading the quiz
+      loadQuiz();
+    });
+  </script>
+</body>
+</html>

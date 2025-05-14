@@ -1,0 +1,175 @@
+
+:root {
+  --quiz-primary: #1A8555;
+  --quiz-primary-hover: #157048;
+  --quiz-secondary: #E6F7F0;
+  --quiz-dark: #333333;
+  --quiz-accent: #64B6AC;
+  --kahoot-blue: #46BDFF;
+  --kahoot-purple: #8A4BD5;
+  --kahoot-pink: #FF4181;
+  --kahoot-yellow: #FFCD1F;
+  --kahoot-red: #FF3355;
+}
+
+/* Additional custom styles */
+.bg-quiz-primary {
+  background-color: var(--quiz-primary);
+}
+
+.bg-quiz-secondary {
+  background-color: var(--quiz-secondary);
+}
+
+.bg-quiz-accent {
+  background-color: var(--quiz-accent);
+}
+
+.bg-kahoot-blue {
+  background-color: var(--kahoot-blue);
+}
+
+.bg-kahoot-purple {
+  background-color: var(--kahoot-purple);
+}
+
+.bg-kahoot-yellow {
+  background-color: var(--kahoot-yellow);
+}
+
+.bg-kahoot-pink {
+  background-color: var(--kahoot-pink);
+}
+
+.bg-kahoot-red {
+  background-color: var(--kahoot-red);
+}
+
+.text-quiz-primary {
+  color: var(--quiz-primary);
+}
+
+.text-quiz-dark {
+  color: var(--quiz-dark);
+}
+
+.text-quiz-accent {
+  color: var(--quiz-accent);
+}
+
+.border-quiz-primary {
+  border-color: var(--quiz-primary);
+}
+
+.hover\:bg-quiz-primary\/90:hover {
+  background-color: rgba(26, 133, 85, 0.9);
+}
+
+.hover\:bg-quiz-primary\/10:hover {
+  background-color: rgba(26, 133, 85, 0.1);
+}
+
+.hover\:bg-white\/90:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.hover\:bg-white\/10:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hover\:text-quiz-primary:hover {
+  color: var(--quiz-primary);
+}
+
+.hover\:text-quiz-primary\/80:hover {
+  color: rgba(26, 133, 85, 0.8);
+}
+
+.from-quiz-primary {
+  --tw-gradient-from: var(--quiz-primary);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(26, 133, 85, 0));
+}
+
+.from-quiz-secondary {
+  --tw-gradient-from: var(--quiz-secondary);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(230, 247, 240, 0));
+}
+
+.to-quiz-primary\/80 {
+  --tw-gradient-to: rgba(26, 133, 85, 0.8);
+}
+
+/* Animations and transitions */
+.transform {
+  transform: var(--tw-transform);
+}
+
+.rotate-3 {
+  --tw-rotate: 3deg;
+  transform: rotate(3deg);
+}
+
+.-rotate-6 {
+  --tw-rotate: -6deg;
+  transform: rotate(-6deg);
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .md\:hidden {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:flex {
+    display: flex;
+  }
+  
+  .md\:w-1\/2 {
+    width: 50%;
+  }
+  
+  .md\:flex-row {
+    flex-direction: row;
+  }
+  
+  .md\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  .md\:py-24 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .md\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+  
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

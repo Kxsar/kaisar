@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Wizard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="w-full bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="bg-quiz-primary rounded-full p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <span class="text-2xl font-bold text-quiz-primary">QuizWizard</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Home</a>
+        <a href="discover.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Discover</a>
+        <a href="create.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Create</a>
+        <a href="join.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Join</a>
+        <a href="about.html" class="text-quiz-dark hover:text-quiz-primary font-medium">About</a>
+      </nav>
+
+      <!-- Search and Auth Buttons -->
+      <div class="hidden md:flex items-center gap-4">
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search quizzes..." 
+            class="pl-10 pr-4 py-2 rounded-full border-gray-200 w-64 focus:border-quiz-primary focus:ring-quiz-primary"
+          />
+        </div>
+        <button class="rounded-full border-gray-200 px-4 py-2 text-sm border">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg> Login
+        </button>
+        <button class="rounded-full bg-quiz-primary hover:bg-quiz-primary/90 text-white px-4 py-2 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg> Sign Up
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        class="md:hidden text-quiz-dark p-2" 
+        id="menuButton"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="menuIcon">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden bg-white py-4 px-4 shadow-md hidden" id="mobileMenu">
+      <nav class="flex flex-col space-y-4">
+        <a href="index.html" class="text-quiz-dark hover:text-quiz-primary font-medium py-2">Home</a>
+        <a href="discover.html" class="text-quiz-dark hover:text-quiz-primary font-medium py-2">Discover</a>
+        <a href="create.html" class="text-quiz-dark hover:text-quiz-primary font-medium py-2">Create</a>
+        <a href="join.html" class="text-quiz-dark hover:text-quiz-primary font-medium py-2">Join</a>
+        <a href="about.html" class="text-quiz-dark hover:text-quiz-primary font-medium py-2">About</a>
+      </nav>
+      <div class="mt-4 space-y-4">
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search quizzes..." 
+            class="pl-10 pr-4 py-2 rounded-full border-gray-200 w-full focus:border-quiz-primary focus:ring-quiz-primary"
+          />
+        </div>
+        <div class="flex gap-2">
+          <button class="rounded-full border-gray-200 px-4 py-2 text-sm border flex-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg> Login
+          </button>
+          <button class="rounded-full bg-quiz-primary hover:bg-quiz-primary/90 text-white px-4 py-2 text-sm flex-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg> Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-r from-quiz-secondary to-white py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+          <!-- Hero Content -->
+          <div class="md:w-1/2 space-y-6">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-quiz-dark">
+              Create <span class="text-quiz-primary">Interactive Quizzes</span> in Minutes
+            </h1>
+            <p class="text-lg text-gray-600">
+              Make learning fun and engaging with our easy-to-use quiz platform. 
+              Perfect for teachers, trainers, and anyone who wants to share knowledge in an entertaining way.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a 
+                href="create.html" 
+                class="rounded-full bg-quiz-primary hover:bg-quiz-primary/90 text-white px-6 py-3 font-medium inline-flex items-center"
+              >
+                Create Quiz 
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a 
+                href="join.html" 
+                class="rounded-full border-quiz-primary text-quiz-primary hover:bg-quiz-primary/10 px-6 py-3 font-medium inline-flex items-center border"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                </svg> Join Quiz
+              </a>
+            </div>
+            <div class="flex items-center gap-4 pt-4">
+              <div class="flex -space-x-2">
+                <img src="https://placehold.co/100" alt="User" class="w-10 h-10 rounded-full border-2 border-white" />
+                <img src="https://placehold.co/100" alt="User" class="w-10 h-10 rounded-full border-2 border-white" />
+                <img src="https://placehold.co/100" alt="User" class="w-10 h-10 rounded-full border-2 border-white" />
+              </div>
+              <p class="text-sm text-gray-600">
+                <span class="font-bold">50,000+</span> educators & trainers trust Quiz Wizard
+              </p>
+            </div>
+          </div>
+          
+          <!-- Hero Image -->
+          <div class="md:w-1/2 relative">
+            <div class="relative bg-white rounded-2xl shadow-lg p-4 max-w-md mx-auto">
+              <img 
+                src="/lovable-uploads/369b6da4-2abf-4673-abaa-c660f4077529.png" 
+                alt="Quiz Wizard Platform" 
+                class="rounded-lg w-full"
+              />
+              <div class="absolute -bottom-4 -right-4 flex items-center gap-2 bg-quiz-primary text-white py-2 px-4 rounded-full shadow-md transform rotate-3">
+                <span class="font-bold">Interactive</span>
+                <span class="bg-white text-quiz-primary rounded-full p-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="absolute -top-8 -left-8 bg-kahoot-yellow text-quiz-dark p-3 rounded-xl shadow-md transform -rotate-6">
+              <p class="font-bold">Engaging Quizzes</p>
+            </div>
+            <div class="absolute -bottom-6 -left-4 bg-kahoot-purple text-white p-3 rounded-xl shadow-md transform rotate-3">
+              <p class="font-bold">Real-time Results</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Decorative Elements -->
+      <div class="absolute top-12 right-12 w-24 h-24 bg-kahoot-blue rounded-full opacity-10"></div>
+      <div class="absolute bottom-12 left-12 w-16 h-16 bg-kahoot-pink rounded-full opacity-10"></div>
+    </div>
+
+    <!-- Quiz Categories Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-quiz-dark mb-4">Popular Categories</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Explore thousands of quizzes across different categories created by our community of educators and quiz enthusiasts.
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="categories-container">
+          <!-- Categories will be dynamically inserted here -->
+        </div>
+        
+        <div class="text-center mt-12">
+          <a 
+            href="categories.html"
+            class="text-quiz-primary hover:text-quiz-primary/80 font-medium inline-flex items-center"
+          >
+            View all categories
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 ml-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-quiz-dark mb-4">Why Choose Quiz Wizard?</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Our platform makes it simple to create engaging, interactive quizzes for any purpose.
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="features-container">
+          <!-- Features will be dynamically inserted here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-16 bg-gradient-to-r from-quiz-primary to-quiz-primary/80 text-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            Ready to Create Your First Interactive Quiz?
+          </h2>
+          <p class="text-white/90 text-lg mb-8">
+            Join thousands of educators, trainers, and quiz enthusiasts who are creating 
+            engaging learning experiences with Quiz Wizard.
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a 
+              href="create.html" 
+              class="bg-white text-quiz-primary hover:bg-white/90 font-medium rounded-full px-6 py-3 inline-flex items-center justify-center"
+            >
+              Create Your First Quiz 
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a 
+              href="#" 
+              class="border-white text-white hover:bg-white/10 rounded-full px-6 py-3 inline-flex items-center justify-center border"
+            >
+              Contact Sales
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200">
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Logo and Info -->
+        <div class="col-span-1 md:col-span-1">
+          <a href="index.html" class="flex items-center gap-2 mb-4">
+            <div class="bg-quiz-primary rounded-full p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span class="text-xl font-bold text-quiz-primary">QuizWizard</span>
+          </a>
+          <p class="text-gray-600 mb-4">
+            Create engaging quizzes for education, training, or entertainment. Connect with your audience through interactive learning.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-500 hover:text-quiz-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-quiz-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-quiz-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-quiz-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h3 class="font-semibold text-quiz-dark mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="index.html" class="text-gray-600 hover:text-quiz-primary">Home</a></li>
+            <li><a href="discover.html" class="text-gray-600 hover:text-quiz-primary">Discover</a></li>
+            <li><a href="create.html" class="text-gray-600 hover:text-quiz-primary">Create Quiz</a></li>
+            <li><a href="pricing.html" class="text-gray-600 hover:text-quiz-primary">Pricing</a></li>
+            <li><a href="faq.html" class="text-gray-600 hover:text-quiz-primary">FAQ</a></li>
+          </ul>
+        </div>
+        
+        <!-- Categories -->
+        <div>
+          <h3 class="font-semibold text-quiz-dark mb-4">Categories</h3>
+          <ul class="space-y-3">
+            <li><a href="category/education.html" class="text-gray-600 hover:text-quiz-primary">Education</a></li>
+            <li><a href="category/business.html" class="text-gray-600 hover:text-quiz-primary">Business</a></li>
+            <li><a href="category/entertainment.html" class="text-gray-600 hover:text-quiz-primary">Entertainment</a></li>
+            <li><a href="category/science.html" class="text-gray-600 hover:text-quiz-primary">Science</a></li>
+            <li><a href="category/sports.html" class="text-gray-600 hover:text-quiz-primary">Sports</a></li>
+          </ul>
+        </div>
+        
+        <!-- Contact -->
+        <div>
+          <h3 class="font-semibold text-quiz-dark mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-quiz-primary">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <a href="mailto:support@quizwizard.com" class="text-gray-600 hover:text-quiz-primary">support@quizwizard.com</a>
+            </li>
+            <li class="text-gray-600">
+              123 Quiz Street<br />
+              Knowledge City, KN 12345<br />
+              United States
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Bottom -->
+      <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-600 text-sm">
+          &copy; <span id="currentYear"></span> Quiz Wizard. All rights reserved.
+        </p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="terms.html" class="text-gray-600 hover:text-quiz-primary text-sm">Terms of Service</a>
+          <a href="privacy.html" class="text-gray-600 hover:text-quiz-primary text-sm">Privacy Policy</a>
+          <a href="cookies.html" class="text-gray-600 hover:text-quiz-primary text-sm">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/kahootAPI.js"></script>
+</body>
+</html>

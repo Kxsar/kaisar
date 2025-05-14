@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Quizzes - Quiz Wizard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="w-full bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="bg-quiz-primary rounded-full p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <span class="text-2xl font-bold text-quiz-primary">QuizWizard</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Home</a>
+        <a href="discover.html" class="text-quiz-dark hover:text-quiz-primary font-medium text-quiz-primary">Discover</a>
+        <a href="create.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Create</a>
+        <a href="join.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Join</a>
+        <a href="about.html" class="text-quiz-dark hover:text-quiz-primary font-medium">About</a>
+      </nav>
+
+      <!-- Search -->
+      <div class="hidden md:flex items-center gap-4">
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search quizzes..." 
+            class="pl-10 pr-4 py-2 rounded-full border-gray-200 w-64 focus:border-quiz-primary focus:ring-quiz-primary"
+          />
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        class="md:hidden text-quiz-dark p-2" 
+        id="menuButton"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="menuIcon">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden bg-white py-4 px-4 shadow-md hidden" id="mobileMenu">
+      <!-- Mobile Navigation -->
+    </div>
+  </header>
+
+  <main class="flex-grow bg-gray-50">
+    <!-- Page Header -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-quiz-dark">Discover Quizzes</h1>
+        <p class="text-gray-600 mt-2">Find and play quizzes created by our community</p>
+      </div>
+    </div>
+    
+    <!-- Search & Filters (Mobile) -->
+    <div class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div class="container mx-auto px-4 py-3">
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search quizzes..." 
+            class="pl-10 pr-4 py-2 rounded-full border-gray-200 w-full focus:border-quiz-primary focus:ring-quiz-primary"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <!-- Content -->
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar with Filters -->
+        <div class="md:w-1/4">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 sticky top-4">
+            <h2 class="font-semibold text-lg text-quiz-dark mb-4">Filters</h2>
+            
+            <!-- Categories -->
+            <div class="mb-6">
+              <h3 class="font-medium text-quiz-dark mb-2">Categories</h3>
+              <div class="space-y-2">
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Education</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Science</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Mathematics</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Geography</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Programming</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Music</span>
+                </label>
+                <a href="#" class="text-sm text-quiz-primary hover:underline">Show all categories</a>
+              </div>
+            </div>
+            
+            <!-- Difficulty -->
+            <div class="mb-6">
+              <h3 class="font-medium text-quiz-dark mb-2">Difficulty</h3>
+              <div class="space-y-2">
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Easy</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Medium</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Hard</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Question Count -->
+            <div class="mb-6">
+              <h3 class="font-medium text-quiz-dark mb-2">Question Count</h3>
+              <div class="space-y-2">
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>Less than 10</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>10-20</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" class="mr-2 text-quiz-primary" checked />
+                  <span>More than 20</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Apply Filters -->
+            <button class="w-full bg-quiz-primary text-white py-2 rounded-md hover:bg-quiz-primary/90">
+              Apply Filters
+            </button>
+          </div>
+        </div>
+        
+        <!-- Quiz Grid -->
+        <div class="md:w-3/4">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="font-semibold text-xl text-quiz-dark">Available Quizzes</h2>
+            <div class="flex gap-2 items-center">
+              <span class="text-sm text-gray-600">Sort by:</span>
+              <select class="border-gray-200 rounded-md text-sm p-1">
+                <option>Most Popular</option>
+                <option>Newest</option>
+                <option>Highest Rated</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Quizzes Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="quizzes-container">
+            <div class="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden flex flex-col">
+              <div class="h-40 bg-gray-200 relative">
+                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+                <div class="absolute bottom-0 left-0 bg-quiz-primary text-white text-xs font-semibold px-2 py-1">
+                  Education
+                </div>
+                <div class="absolute top-2 right-2 bg-white text-quiz-dark text-xs rounded-full px-2 py-1 font-medium">
+                  10 questions
+                </div>
+              </div>
+              <div class="p-4 flex-grow">
+                <h3 class="font-semibold text-quiz-dark mb-1">Loading Quizzes...</h3>
+                <p class="text-gray-600 text-sm line-clamp-2 mb-3">Please wait while we load quizzes from our database.</p>
+                <div class="flex justify-between items-center text-xs text-gray-500">
+                  <span>By QuizMaster</span>
+                  <span>2 days ago</span>
+                </div>
+              </div>
+              <div class="px-4 py-3 bg-gray-50 border-t border-gray-100">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-500 mr-1" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span class="text-sm">4.5 (120)</span>
+                  </div>
+                  <button disabled class="bg-gray-300 text-white text-sm px-3 py-1 rounded-md">
+                    Loading...
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Pagination -->
+          <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">Previous</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </a>
+              <a href="#" aria-current="page" class="relative inline-flex items-center px-4 py-2 border border-quiz-primary bg-quiz-primary text-sm font-medium text-white">
+                1
+              </a>
+              <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                2
+              </a>
+              <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                3
+              </a>
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">Next</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200">
+    <div class="container mx-auto px-4 py-4 text-center">
+      <p class="text-gray-600 text-sm">
+        &copy; <span id="currentYear"></span> Quiz Wizard. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/kahootAPI.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load quizzes
+      loadQuizzes();
+      
+      async function loadQuizzes() {
+        try {
+          // Fetch quizzes from the mock API
+          const result = await window.KahootAPI.fetchPublicQuizzes();
+          
+          // Generate HTML for each quiz
+          let quizzesHTML = '';
+          
+          result.entities.forEach(quiz => {
+            // Calculate random stats for demo purposes
+            const questionsCount = quiz.questions.length;
+            const rating = (3 + Math.random() * 2).toFixed(1);
+            const reviews = Math.floor(Math.random() * 200) + 50;
+            const daysAgo = Math.floor(Math.random() * 14) + 1;
+            
+            quizzesHTML += `
+              <div class="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden flex flex-col">
+                <div class="h-40 bg-gray-200 relative">
+                  <img src="${quiz.cover || 'https://placehold.co/600x400/1A8555/FFFFFF/png?text=Quiz'}" alt="${quiz.title}" class="w-full h-full object-cover" />
+                  <div class="absolute bottom-0 left-0 bg-quiz-primary text-white text-xs font-semibold px-2 py-1">
+                    ${quiz.type || 'Quiz'}
+                  </div>
+                  <div class="absolute top-2 right-2 bg-white text-quiz-dark text-xs rounded-full px-2 py-1 font-medium">
+                    ${questionsCount} questions
+                  </div>
+                </div>
+                <div class="p-4 flex-grow">
+                  <h3 class="font-semibold text-quiz-dark mb-1">${quiz.title}</h3>
+                  <p class="text-gray-600 text-sm line-clamp-2 mb-3">${quiz.description || 'No description available'}</p>
+                  <div class="flex justify-between items-center text-xs text-gray-500">
+                    <span>By ${quiz.creator_username}</span>
+                    <span>${daysAgo} days ago</span>
+                  </div>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 border-t border-gray-100">
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-500 mr-1" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                      <span class="text-sm">${rating} (${reviews})</span>
+                    </div>
+                    <a href="play.html?game=${quiz.uuid}" class="bg-quiz-primary hover:bg-quiz-primary/90 text-white text-sm px-3 py-1 rounded-md">
+                      Play
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          
+          // Update the DOM
+          document.getElementById('quizzes-container').innerHTML = quizzesHTML;
+          
+        } catch (error) {
+          console.error('Failed to load quizzes:', error);
+          document.getElementById('quizzes-container').innerHTML = `
+            <div class="col-span-full text-center py-8 text-gray-500">
+              <p>Failed to load quizzes. Please try again later.</p>
+            </div>
+          `;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Quiz - Quiz Wizard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-quiz-primary to-quiz-primary/70 p-4">
+  <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-lg text-center">
+    <div class="mb-8">
+      <div class="bg-quiz-primary rounded-full p-3 inline-block mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-quiz-dark mb-2">Join Quiz</h1>
+      <p class="text-gray-600">
+        Enter your nickname and the quiz PIN to join
+      </p>
+    </div>
+    
+    <form id="join-form">
+      <div class="mb-4">
+        <input
+          type="text"
+          id="quiz-pin"
+          placeholder="Quiz PIN"
+          class="w-full mb-4 text-center text-lg py-6 border border-gray-200 rounded-md"
+          maxlength="6"
+          required
+        />
+      </div>
+      
+      <div class="mb-6">
+        <input
+          type="text"
+          id="nickname"
+          placeholder="Your nickname"
+          class="w-full text-center text-lg py-6 border border-gray-200 rounded-md"
+          maxlength="15"
+          required
+        />
+      </div>
+      
+      <button 
+        type="submit"
+        id="join-button"
+        class="w-full py-6 text-lg bg-quiz-primary hover:bg-quiz-primary/90 text-white rounded-md"
+      >
+        Join Game
+      </button>
+    </form>
+    
+    <div class="mt-8 text-center">
+      <a 
+        href="index.html"
+        class="text-quiz-primary hover:underline"
+      >
+        Back to Home
+      </a>
+    </div>
+  </div>
+  
+  <div class="mt-8 text-white text-center">
+    <p class="text-xl font-bold mb-2">Quiz Wizard</p>
+    <p class="text-sm opacity-80">Create and play interactive quizzes</p>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/kahootAPI.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const joinForm = document.getElementById('join-form');
+      const joinButton = document.getElementById('join-button');
+      const pinInput = document.getElementById('quiz-pin');
+      const nicknameInput = document.getElementById('nickname');
+      
+      // Check for PIN in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const pinFromUrl = urlParams.get('pin');
+      
+      if (pinFromUrl) {
+        pinInput.value = pinFromUrl;
+        nicknameInput.focus();
+      }
+      
+      joinForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const pin = pinInput.value.trim();
+        const nickname = nicknameInput.value.trim();
+        
+        if (!pin || !nickname) return;
+        
+        // Show loading state
+        joinButton.disabled = true;
+        joinButton.innerHTML = `
+          <span class="inline-block w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+          Joining...
+        `;
+        
+        try {
+          // Call the mock Kahoot API
+          const result = await window.KahootAPI.joinQuizByPin(pin, nickname);
+          
+          // If successful, redirect to the game
+          if (result.success) {
+            localStorage.setItem('quizPlayer', JSON.stringify({
+              gameId: result.gameId,
+              nickname: result.nickname
+            }));
+            
+            // Redirect to game
+            setTimeout(() => {
+              window.location.href = `play.html?game=${result.gameId}`;
+            }, 1000);
+          }
+        } catch (error) {
+          alert(error.message || 'Failed to join quiz. Please try again.');
+          
+          // Reset button
+          joinButton.disabled = false;
+          joinButton.textContent = 'Join Game';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

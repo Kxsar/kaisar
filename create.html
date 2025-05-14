@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Quiz - Quiz Wizard</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="w-full bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="bg-quiz-primary rounded-full p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <span class="text-2xl font-bold text-quiz-primary">QuizWizard</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Home</a>
+        <a href="discover.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Discover</a>
+        <a href="create.html" class="text-quiz-dark hover:text-quiz-primary font-medium text-quiz-primary">Create</a>
+        <a href="join.html" class="text-quiz-dark hover:text-quiz-primary font-medium">Join</a>
+        <a href="about.html" class="text-quiz-dark hover:text-quiz-primary font-medium">About</a>
+      </nav>
+
+      <!-- User Menu (placeholder) -->
+      <div class="hidden md:flex items-center gap-4">
+        <button class="rounded-full border-gray-200 px-4 py-2 text-sm border">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg> Login
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        class="md:hidden text-quiz-dark p-2" 
+        id="menuButton"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="menuIcon">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden bg-white py-4 px-4 shadow-md hidden" id="mobileMenu">
+      <!-- Mobile Navigation -->
+    </div>
+  </header>
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl font-bold text-quiz-dark mb-6">Create a New Quiz</h1>
+      
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4">Quiz Details</h2>
+        
+        <form id="create-quiz-form">
+          <div class="mb-4">
+            <label for="title" class="block text-gray-700 font-medium mb-2">Quiz Title</label>
+            <input 
+              type="text" 
+              id="title" 
+              class="w-full px-4 py-2 border border-gray-200 rounded-md"
+              placeholder="Enter quiz title"
+              required
+            />
+          </div>
+          
+          <div class="mb-4">
+            <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+            <textarea 
+              id="description" 
+              class="w-full px-4 py-2 border border-gray-200 rounded-md"
+              placeholder="Enter quiz description"
+              rows="3"
+            ></textarea>
+          </div>
+          
+          <div class="mb-4">
+            <label for="category" class="block text-gray-700 font-medium mb-2">Category</label>
+            <select 
+              id="category" 
+              class="w-full px-4 py-2 border border-gray-200 rounded-md"
+            >
+              <option value="education">Education</option>
+              <option value="science">Science</option>
+              <option value="mathematics">Mathematics</option>
+              <option value="language">Language</option>
+              <option value="geography">Geography</option>
+              <option value="history">History</option>
+              <option value="arts">Arts</option>
+              <option value="sports">Sports</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Visibility</label>
+            <div class="flex gap-4">
+              <label class="flex items-center">
+                <input type="radio" name="visibility" value="public" checked class="mr-2" />
+                Public
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="visibility" value="private" class="mr-2" />
+                Private
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Questions</h2>
+          <button 
+            id="add-question" 
+            class="bg-quiz-primary text-white px-4 py-2 rounded-md hover:bg-quiz-primary/90"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="inline mr-1 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Question
+          </button>
+        </div>
+        
+        <div id="questions-container">
+          <div class="text-center py-8 text-gray-500">
+            No questions added yet. Click "Add Question" to start building your quiz.
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-end gap-4">
+        <button 
+          id="preview-button" 
+          class="border border-quiz-primary text-quiz-primary px-6 py-3 rounded-md hover:bg-quiz-primary/10"
+        >
+          Preview
+        </button>
+        <button 
+          id="save-button" 
+          class="bg-quiz-primary text-white px-6 py-3 rounded-md hover:bg-quiz-primary/90"
+        >
+          Save Quiz
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Question Template Modal -->
+  <div id="question-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold">Add Question</h3>
+        <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <form id="question-form">
+        <div class="mb-4">
+          <label for="question-text" class="block text-gray-700 font-medium mb-2">Question</label>
+          <input 
+            type="text" 
+            id="question-text" 
+            class="w-full px-4 py-2 border border-gray-200 rounded-md"
+            placeholder="Enter your question"
+            required
+          />
+        </div>
+        
+        <div class="mb-4">
+          <label for="question-type" class="block text-gray-700 font-medium mb-2">Question Type</label>
+          <select 
+            id="question-type" 
+            class="w-full px-4 py-2 border border-gray-200 rounded-md"
+          >
+            <option value="multiple-choice">Multiple Choice</option>
+            <option value="true-false">True/False</option>
+            <option value="poll">Poll</option>
+          </select>
+        </div>
+        
+        <div class="mb-4">
+          <label for="time-limit" class="block text-gray-700 font-medium mb-2">Time Limit (seconds)</label>
+          <select 
+            id="time-limit" 
+            class="w-full px-4 py-2 border border-gray-200 rounded-md"
+          >
+            <option value="10">10 seconds</option>
+            <option value="20" selected>20 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60">60 seconds</option>
+            <option value="90">90 seconds</option>
+            <option value="120">120 seconds</option>
+          </select>
+        </div>
+        
+        <div id="answers-container" class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Answers</label>
+          
+          <div class="answer-option mb-3">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 rounded-md bg-red-500 flex items-center justify-center text-white flex-shrink-0">
+                <span>A</span>
+              </div>
+              <input 
+                type="text" 
+                class="answer-text w-full px-4 py-2 border border-gray-200 rounded-md"
+                placeholder="Answer option"
+                required
+              />
+              <label class="flex items-center ml-2">
+                <input type="radio" name="correct-answer" value="0" checked class="mr-1" />
+                Correct
+              </label>
+            </div>
+          </div>
+          
+          <div class="answer-option mb-3">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 rounded-md bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
+                <span>B</span>
+              </div>
+              <input 
+                type="text" 
+                class="answer-text w-full px-4 py-2 border border-gray-200 rounded-md"
+                placeholder="Answer option"
+                required
+              />
+              <label class="flex items-center ml-2">
+                <input type="radio" name="correct-answer" value="1" class="mr-1" />
+                Correct
+              </label>
+            </div>
+          </div>
+          
+          <div class="answer-option mb-3">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 rounded-md bg-yellow-500 flex items-center justify-center text-white flex-shrink-0">
+                <span>C</span>
+              </div>
+              <input 
+                type="text" 
+                class="answer-text w-full px-4 py-2 border border-gray-200 rounded-md"
+                placeholder="Answer option"
+                required
+              />
+              <label class="flex items-center ml-2">
+                <input type="radio" name="correct-answer" value="2" class="mr-1" />
+                Correct
+              </label>
+            </div>
+          </div>
+          
+          <div class="answer-option mb-3">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 rounded-md bg-green-500 flex items-center justify-center text-white flex-shrink-0">
+                <span>D</span>
+              </div>
+              <input 
+                type="text" 
+                class="answer-text w-full px-4 py-2 border border-gray-200 rounded-md"
+                placeholder="Answer option"
+                required
+              />
+              <label class="flex items-center ml-2">
+                <input type="radio" name="correct-answer" value="3" class="mr-1" />
+                Correct
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-end gap-3">
+          <button 
+            type="button"
+            id="cancel-question" 
+            class="px-4 py-2 border border-gray-200 rounded-md hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit"
+            id="add-question-btn" 
+            class="bg-quiz-primary text-white px-4 py-2 rounded-md hover:bg-quiz-primary/90"
+          >
+            Add Question
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-gray-200">
+    <div class="container mx-auto px-4 py-4 text-center">
+      <p class="text-gray-600 text-sm">
+        &copy; <span id="currentYear"></span> Quiz Wizard. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/kahootAPI.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addQuestionBtn = document.getElementById('add-question');
+      const questionModal = document.getElementById('question-modal');
+      const closeModalBtn = document.getElementById('close-modal');
+      const cancelQuestionBtn = document.getElementById('cancel-question');
+      const questionForm = document.getElementById('question-form');
+      const questionsContainer = document.getElementById('questions-container');
+      const createQuizForm = document.getElementById('create-quiz-form');
+      const saveButton = document.getElementById('save-button');
+      
+      let questions = [];
+      let currentQuestionIndex = -1;
+      
+      // Open modal to add question
+      addQuestionBtn.addEventListener('click', function() {
+        questionModal.classList.remove('hidden');
+        currentQuestionIndex = -1;
+        questionForm.reset();
+        document.getElementById('add-question-btn').textContent = 'Add Question';
+      });
+      
+      // Close modal
+      closeModalBtn.addEventListener('click', function() {
+        questionModal.classList.add('hidden');
+      });
+      
+      // Cancel question
+      cancelQuestionBtn.addEventListener('click', function() {
+        questionModal.classList.add('hidden');
+      });
+      
+      // Handle question type change
+      document.getElementById('question-type').addEventListener('change', function(e) {
+        const answerOptions = document.querySelectorAll('.answer-option');
+        
+        if (e.target.value === 'true-false') {
+          // For True/False, show only 2 options
+          answerOptions.forEach((option, index) => {
+            if (index < 2) {
+              option.style.display = 'block';
+              const input = option.querySelector('input[type="text"]');
+              if (index === 0) input.value = 'True';
+              if (index === 1) input.value = 'False';
+            } else {
+              option.style.display = 'none';
+            }
+          });
+        } else {
+          // For other types, show all options
+          answerOptions.forEach(option => {
+            option.style.display = 'block';
+          });
+          
+          // If coming from True/False, reset the values
+          if (answerOptions[0].querySelector('input[type="text"]').value === 'True') {
+            answerOptions.forEach(option => {
+              option.querySelector('input[type="text"]').value = '';
+            });
+          }
+        }
+      });
+      
+      // Add or update question
+      questionForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const questionText = document.getElementById('question-text').value;
+        const questionType = document.getElementById('question-type').value;
+        const timeLimit = document.getElementById('time-limit').value;
+        
+        const answerInputs = document.querySelectorAll('.answer-text');
+        const correctAnswerIndex = parseInt(document.querySelector('input[name="correct-answer"]:checked').value);
+        
+        const answers = [];
+        answerInputs.forEach((input, index) => {
+          if (input.parentElement.parentElement.style.display !== 'none') {
+            answers.push({
+              text: input.value,
+              isCorrect: index === correctAnswerIndex
+            });
+          }
+        });
+        
+        const question = {
+          text: questionText,
+          type: questionType,
+          timeLimit: parseInt(timeLimit),
+          answers: answers
+        };
+        
+        if (currentQuestionIndex >= 0) {
+          // Update existing question
+          questions[currentQuestionIndex] = question;
+        } else {
+          // Add new question
+          questions.push(question);
+        }
+        
+        // Update UI
+        renderQuestions();
+        
+        // Close modal
+        questionModal.classList.add('hidden');
+      });
+      
+      function renderQuestions() {
+        if (questions.length === 0) {
+          questionsContainer.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+              No questions added yet. Click "Add Question" to start building your quiz.
+            </div>
+          `;
+          return;
+        }
+        
+        let html = '';
+        
+        questions.forEach((question, index) => {
+          html += `
+            <div class="border border-gray-200 rounded-md p-4 mb-4">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-medium">Question ${index + 1}</h3>
+                <div>
+                  <button class="text-quiz-primary hover:text-quiz-primary/80 mr-2" onclick="editQuestion(${index})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                    </svg>
+                  </button>
+                  <button class="text-red-500 hover:text-red-600" onclick="deleteQuestion(${index})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <p class="mb-3">${question.text}</p>
+              <p class="text-sm text-gray-500 mb-2">
+                ${question.type === 'multiple-choice' ? 'Multiple Choice' : 
+                  question.type === 'true-false' ? 'True/False' : 'Poll'} • 
+                ${question.timeLimit} seconds
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          `;
+          
+          question.answers.forEach((answer, aIndex) => {
+            const colors = ['bg-red-500', 'bg-blue-500', 'bg-yellow-500', 'bg-green-500'];
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            html += `
+              <div class="flex gap-2 items-center ${answer.isCorrect ? 'font-semibold' : ''}">
+                <div class="w-6 h-6 ${colors[aIndex]} rounded-md flex items-center justify-center text-white text-xs">
+                  ${letters[aIndex]}
+                </div>
+                <span>${answer.text}</span>
+                ${answer.isCorrect ? '<span class="ml-auto text-green-500">✓</span>' : ''}
+              </div>
+            `;
+          });
+          
+          html += `
+              </div>
+            </div>
+          `;
+        });
+        
+        questionsContainer.innerHTML = html;
+      }
+      
+      // Global functions for edit and delete
+      window.editQuestion = function(index) {
+        currentQuestionIndex = index;
+        const question = questions[index];
+        
+        document.getElementById('question-text').value = question.text;
+        document.getElementById('question-type').value = question.type;
+        document.getElementById('time-limit').value = question.timeLimit;
+        
+        // Trigger change event to handle True/False layout
+        const event = new Event('change');
+        document.getElementById('question-type').dispatchEvent(event);
+        
+        // Set answer values
+        const answerInputs = document.querySelectorAll('.answer-text');
+        question.answers.forEach((answer, i) => {
+          if (i < answerInputs.length) {
+            answerInputs[i].value = answer.text;
+          }
+        });
+        
+        // Set correct answer
+        const correctIndex = question.answers.findIndex(a => a.isCorrect);
+        if (correctIndex >= 0) {
+          document.querySelector(`input[name="correct-answer"][value="${correctIndex}"]`).checked = true;
+        }
+        
+        // Update button text
+        document.getElementById('add-question-btn').textContent = 'Update Question';
+        
+        // Show modal
+        questionModal.classList.remove('hidden');
+      };
+      
+      window.deleteQuestion = function(index) {
+        if (confirm('Are you sure you want to delete this question?')) {
+          questions.splice(index, 1);
+          renderQuestions();
+        }
+      };
+      
+      // Save the entire quiz
+      saveButton.addEventListener('click', async function() {
+        if (questions.length === 0) {
+          alert('You need to add at least one question to save this quiz.');
+          return;
+        }
+        
+        const title = document.getElementById('title').value;
+        if (!title) {
+          alert('Please enter a quiz title.');
+          return;
+        }
+        
+        const description = document.getElementById('description').value;
+        const category = document.getElementById('category').value;
+        const visibility = document.querySelector('input[name="visibility"]:checked').value;
+        
+        const quizData = {
+          title,
+          description,
+          category,
+          visibility: visibility === 'public' ? 1 : 0,
+          questions: questions.map(q => ({
+            question: q.text,
+            time: q.timeLimit,
+            points: true,
+            pointsMultiplier: 1,
+            choices: q.answers.map(a => ({
+              answer: a.text,
+              correct: a.isCorrect
+            })),
+            type: 'quiz',
+            layout: 'CLASSIC'
+          }))
+        };
+        
+        try {
+          // Change button to loading state
+          saveButton.disabled = true;
+          saveButton.innerHTML = `
+            <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+            Saving...
+          `;
+          
+          // Call the mock Kahoot API
+          const result = await window.KahootAPI.createQuiz(quizData);
+          
+          // Show success message
+          alert('Quiz saved successfully!');
+          
+          // Redirect to home page
+          window.location.href = 'index.html';
+          
+        } catch (error) {
+          alert(error.message || 'Failed to save quiz. Please try again.');
+          
+          // Reset button
+          saveButton.disabled = false;
+          saveButton.textContent = 'Save Quiz';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
